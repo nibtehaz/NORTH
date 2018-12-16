@@ -1,1 +1,305 @@
-Under Construction
+<!--Bismillahir Rahmanir Rahim-->
+<!--Rabbi Zidni Ilma-->
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>NORTH</title>
+     <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" >
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+     <!-- Compiled and minified JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+
+    <style>
+
+        .header{
+            background: #12c2e9;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #f64f59, #c471ed, #12c2e9);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #f64f59, #c471ed, #12c2e9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            color: aliceblue;
+            padding: 50px 70px 50px 70px;            
+            height: 100%;
+        }
+
+        .nav-wrapper{
+            background: #c31432;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #240b36, #c31432);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #240b36, #c31432); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+        }
+
+        .fp{
+            height: 100%;
+        }
+
+        .centh3{
+            text-align: center;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            padding-top: 100px;
+            padding-bottom: 100px;
+        }
+
+        .writing{
+            font-size: 20px;
+            padding-bottom: 100px;
+        }
+
+        .rcorners {
+            border-radius: 25px;
+            background: white;
+            width: 70px;
+            height: 70px; 
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+        width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+        background: #f1f1f1; 
+        }
+        
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+        background: #f6a2ad; 
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+        background: #eb7077; 
+        }
+          
+    </style>
+             
+</head>
+<body>
+
+        <div class="navbar-fixed" id="navbar">
+            <nav>
+                <div class="nav-wrapper">
+                <a href="#header" class="brand-logo" style="margin-left:20px">NORTH</a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="#background">Background</a></li>
+                    <li><a href="#motivation">Motivation</a></li>
+                    <li><a href="#methods">Methods</a></li>                    
+                    <li><a href="#server">Server</a></li>
+                    <li><a href="#desktop_app">Desktop App</a></li>                    
+                    <li><a href="#source_codes">Source Code</a></li>
+                    <li><a href="#publication">Publication</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+                </div>
+            </nav>
+        </div>
+
+    <div class="header" id="header">
+        <div style="height:30%"></div>
+        <h1>NORTH</h1>
+        <h3>a highly accurate and scalable Naive bayes based ORTHologous gene clustering algorithm</h3>
+        <div style="height:30%"></div>
+    </div>
+
+    <div id="background" class="red accent-1 fp">
+        
+        <h3 class="centh3">Background</h3>
+        <div class="container writing">
+                The primary objective of comparative genomics is inferring attributes of an unknown gene by 
+                comparing it with well-studied genes. In this regard, the notion of gene orthology plays a pivotal role 
+                as the orthologous genes remain less diverged in the course of evolution. However, this task is often difficult, 
+                slow, and idiosyncratic, especially in the presence of multiplicity of domains in proteins, evolutionary dynamics 
+                (gene duplication, transfer, loss, introgression etc.), multiple paralogous genes, incomplete genome data, and for 
+                distantly related species where similarity is hard to recognize.
+        </div>
+    </div>
+
+    <div id="motivation" class="pink accent-1 fp">
+        
+        <h3 class="centh3">Motivation</h3>
+        <div class="container writing">
+            Advances in this domain have been mostly constrained to developing databases of genes so that a BLAST search 
+            can be performed to estimate orthologous relationships or, to the other extreme, constructing a computationally 
+            expensive phylogenetic tree to identify the gene duplications and speciations. There are usually some parameters 
+            involved in these algorithms which are manually tuned and sets one method apart from the other. Machine Learning 
+            based approaches show greater promises, but the existing works are too constrained.
+            <br><br>
+            In this work our motivation is to investigate how much information about gene orthology can be determined from the 
+            gene sequence alone, using machine learning. 
+        </div>
+    </div>
+    
+    <div id="methods" class=" fp">
+        
+        <h3 class="centh3"  style="padding-bottom:30px;">Methods</h3>
+        <div class="container writing"  style="padding-bottom:10px;">
+            NORTH starts with breaking the input protein sequence of the gene into k-mers. 
+            It uses the k-mer frequencies as the features, and uses multinomial Naive Bayes classifier with 
+            the bag-of-words model to classify the input sequence into one of the predifined orthologous clusters.
+            Finally, it reports whether the gene is a member of the predifined orthologous clusters or an outlier.
+        </div>
+        <img src="img/pipeline.png" alt="" width="100%" style="padding:5%">
+        <div style="height:20px"></div>
+    </div>
+
+    <div id="server" class="indigo accent-1 fp">
+        
+        <h3 class="centh3"  style="padding-bottom:50px;">NORTH Server</h3>
+        <div class="container writing"  style="padding-bottom:50px;">
+            NORTH is accessible as a web interface with a server side application. The user can submit raw protein sequences, 
+            FASTA files or UniProtIDs and obtain the results.  Moreover, we provide the APIs to use our system program-matically.
+
+            <br><br>
+
+            The server can be accessed using the following button. We intend on continue updating the NORTH server application, with 
+            more and more new genomic data.
+        </div>
+        
+        <h1 style="text-align:center;"><a href="" class="btn btn-large pink">NORTH Server</a></h1>
+
+        <div style="height:20px"></div>
+    </div>
+        
+    <div id="desktop_app" class=" blue accent-2 fp">
+        
+        <h3 class="centh3" style="padding-bottom:50px">Desktop App</h3>
+        <div class="container writing" style="padding-bottom:0">
+            NORTH is also available as standalone, cross-platform desktop applications, for the convenience of the researchers. The apps can be downloaded freely from the following links.
+        </div>
+
+        <div class="row" style="margin-left:10px;margin-right:10px;margin-bottom: 0">
+            <div class="col s12 m4">                                
+                <h1 style="background-color:#f8a353;color:black;text-align: center; font-size: 1000%; padding-top: 10%;padding-bottom: 5%;margin-bottom: 0px"><i class="fab fa-linux"></i></h1>
+                <h1 style="background-color:#f8a353;color:black;text-align: right;margin-top: 0px"><a href="" class="waves-effect waves-teal btn-flat"><i class="material-icons" style="font-size: 200%;">file_download</i></a></h1>
+            </div>
+
+            <div class="col s12 m4">                                
+                <h1 style="background-color:gray;color:black;text-align: center; font-size: 1000%; padding-top: 10%;padding-bottom: 5%;margin-bottom: 0px"><i class="fab fa-apple"></i></h1>
+                <h1 style="background-color:gray;color:white;text-align: right;margin-top: 0px"><a href="" class="waves-effect waves-teal btn-flat"><i class="material-icons" style="font-size: 200%;">file_download</i></a></h1>
+            </div>
+
+            <div class="col s12 m4">                
+                
+                <h1 style="background-color:#00adef;color:white;text-align: center; font-size: 1000%; padding-top: 10%;padding-bottom: 5%;margin-bottom: 0px"><i class="fab fa-windows"></i></h1>
+                <h1 style="background-color:#00adef;color:white;text-align: right;margin-top: 0px"><a href="" class="waves-effect waves-teal btn-flat"><i class="material-icons" style="font-size: 200%;">file_download</i></a></h1>
+            
+            </div>
+        </div>
+        
+    </div>
+    
+    <div id="source_codes" class="light-blue accent-1 fp">
+    
+        <h3 class="centh3"  style="padding-bottom:50px">Source Codes</h3>
+        <div class="container writing" style="padding-bottom:0">
+            We have made NORTH open source to facilitate the research community further. 
+            All the codes can be found in the following links
+        </div>
+
+        <div class="row" style="margin-left:10px;margin-right:10px;margin-bottom: 0">
+            <div class="col s12 m4">                                
+                <h1 style="background-color:crimson;color:white;text-align: center; font-size: 1000%; padding-top: 5%;padding-bottom: 3%;margin-bottom: 0px"><i class="fas fa-code"></i></h1>
+                <h4 style="background-color:crimson;color:white;text-align: center;  padding-top: 0%;padding-bottom: 5%;margin-top: 0px">Code for the Paper</h4>
+                
+            </div>
+
+            <div class="col s12 m4">                                
+                <h1 style="background-color:crimson;color:white;text-align: center; font-size: 1000%; padding-top: 5%;padding-bottom: 3%;margin-bottom: 0px"><i class="fas fa-server"></i></h1>
+                <h4 style="background-color:crimson;color:white;text-align: center;  padding-top: 0%;padding-bottom: 5%;margin-top: 0px">Code for the Server App</h4>
+            </div>
+
+            <div class="col s12 m4">                
+                
+                <h1 style="background-color:crimson;color:white;text-align: center; font-size: 1000%; padding-top: 5%;padding-bottom: 3%;margin-bottom: 0px"><i class="fas fa-desktop"></i></h1>
+                <h4 style="background-color:crimson;color:white;text-align: center;  padding-top: 0%;padding-bottom: 5%;margin-top: 0px">Code for the Desktop App</h4>
+            
+            </div>
+        </div>
+            
+    </div>
+
+    
+    <div id="publication" class="cyan accent-3 fp">
+        
+        <h3 class="centh3"  style="padding-bottom:50px;">Publication</h3>
+        <div class="container writing"  style="padding-bottom:50px;">
+            If you use NORTH in your research, please cite the following paper
+
+                <div style="margin-top: 25px">
+                    <div style="background:#eceff1;padding: 50px; border-radius: 25px">
+                            NORTH: a highly accurate and scalable Naive bayes based ORTHologous gene clustering algorithm
+                            Nabil Ibtehaz , Shafayat Ahmed , Bishwajit Saha, M. Sohel Rahman, Md. Shamsuzzoha Bayzid
+                            .....................
+                    </div>
+                    <div class="row" style="margin-top:20px">
+                        <div class="col s2"> 
+                            <a href="" class="btn red accent-3" style="width:100%">Paper</a>
+                        </div>
+
+                        <div class="col s5"> 
+                            <a href="" class="btn green accent-3" style="width:100%">Supplementary Materials</a>
+                        </div>
+
+                        <div class="col s3"> 
+                            <a class="btn cyan modal-trigger" style="width:100%" href="#citemodal">Citation</a>
+                        </div>
+
+                        <div class="col s2"> 
+                            <a href="" class="btn blue-grey" style="width:100%">Preprint</a>
+                        </div>
+
+                        
+    
+                        <div id="citemodal" class="modal">
+                            <div class="modal-content">
+                            <h4 style="text-align:center">Bibtex</h4>
+
+                            <input type="textbox" style="width:100%;border:white;height: 50%" value="Hello World" id="bibtext">
+
+                            </div>
+                            <div class="modal-footer" style="text-align:center">
+                            <a href="#!" onclick="copyText()" class="modal-close waves-effect waves-light btn">Copy to Clipboard</a>
+                            </div>
+                        </div>
+                </div>
+            </div>
+
+            <div style="height:20px"></div>
+        </div>
+    </div>
+
+    <div id="contact" class="blue-grey lighten-3 fp">
+        
+        <h3 class="centh3"  style="padding-bottom:50px;">Contact Us</h3>
+        <div class="container writing"  style="padding-bottom:50px;">
+            If you have any issues, queries or suggestions related to the NORTH project, please send a mail to 
+            the following address.
+
+            <h3 style="text-align:center;padding-top:30px"><a href="mailto:1017052037@grad.cse.buet.ac.bd?Subject=NORTH" target="_top">1017052037@grad.cse.buet.ac.bd</a></h3>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $('.modal').modal();
+        });
+
+        function copyText() {
+            var copyText = document.getElementById("bibtext");
+            copyText.select();
+            document.execCommand("copy");
+            M.toast({html: 'Copied to Clipboard!'})
+        }
+    </script>
+    
+</body>
+</html>
