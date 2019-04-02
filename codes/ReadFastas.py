@@ -1,4 +1,3 @@
-import requests
 import pickle
 import os
 from pathlib import Path
@@ -6,154 +5,133 @@ from tqdm import tqdm
 from Bio import SeqIO
 from FeatureExtraction import breakIntoKmer
 import numpy as np 
-
-def parseFiles():
-
-	X = []
-
-	genes = list(SeqIO.parse(fastaFile,'fasta'))
+from time import sleep
 
 
+def readFastas(data_path, save_file_name='3merFasta.p', n_clusters=100, min_cnt=None, K=3):
+	'''
+	Reads the fasta files from the directory
+	
+	If we provide value to min_cnt variable then all the clusters having a minimum of
+	min_cnt number of genes will be considered. 
+	*If this is given, the n_clusters value will be ignored*
 
-def readFastas(family,saveFile='3merFasta.p',k=3,nClasses=100):
+	Otherwise, if we provide value to n_clusters variable then only the biggest
+	n_clusters clusters will be considered
 
-	X = []
-	Y = []
-
-	files = next(os.walk('kegg/'+family+'/Fasta/'))[2]
-	lenli = []
-
-	for file in tqdm(files,total=len(files)):
-
-		genes = list(SeqIO.parse('kegg/'+family+'/Fasta/'+file,'fasta'))
-		lenli.append(len(genes))
-
-	lenli.sort()
-
-	print(lenli[0],lenli[-nClasses],lenli[-1])
-
-	for file in tqdm(files,total=len(files)):
-
-		genes = list(SeqIO.parse('kegg/'+family+'/Fasta/'+file,'fasta'))
-
-		if(len(genes)<lenli[-nClasses]):
-
-			continue
-
-		np.random.shuffle(genes)
-
-		for gene in genes:
-
-			X.append(breakIntoKmer(str(gene.seq),k))
-			Y.append(file[0:6])
+	Arguments:
+		data_path {str} -- path to the directory containing fasta files
+	
+	Keyword Arguments:
+		save_file_name {str} -- name of the pickle file that contains all the gene sequence (default: {'3merFasta.p'})
+		n_clusters {int} -- number of ortholog clusters (default: {100})
+		min_cnt {int} -- minimum number of genes in a cluster to consider (default: {None})							
+		K {int} -- value of k (default: {3})
+	'''
 
 
+	X = []			# list to store gene sequences
+	Y = []			# list to store ortholog cluster ids of individual genes
 
-	print(set(Y))
+	vocabulary = {}			# dictionary to contain vocabulary
 
-	print(len(set(Y)))
+	files = next(os.walk(data_path))[2]
+	lenli = []				# list containing size of ortholog clusters
 
-	pickle.dump((X,Y),open(saveFile,'wb'))
-
-
-def rawReadFastas(family,saveFile='3merFasta.p',nClasses=100,minCnt=None,K=3):
-
-	X = []
-	Y = []
-
-	vocabulary = {}
-
-	files = next(os.walk('kegg/'+family+'/Fasta/'))[2]
-	lenli = []
-
-	if(minCnt==None):
+	if(min_cnt==None):				# Considering the biggest n_clusters clusters
 
 		for file in tqdm(files,total=len(files)):
 
-			genes = list(SeqIO.parse('kegg/'+family+'/Fasta/'+file,'fasta'))
+			genes = list(SeqIO.parse(os.path.join(data_path,file),'fasta'))
 			lenli.append(len(genes))
+			
 
 		lenli.sort()
 
-		print(lenli[0],lenli[-nClasses],lenli[-1])
+		print('Smallest Cluster : {} genes'.format(lenli[0]))
+		print('{}th Cluster : {} genes'.format(n_clusters, lenli[-n_clusters]))
+		print('Biggest Cluster : {} genes'.format(lenli[-1]))
 
-		lenli[-nClasses] = max(lenli[-nClasses],20)
+		lenli[-n_clusters] = max(lenli[-n_clusters],20)		# If the clusters are too small
+															# this avoids empty clusters
+
 
 		for file in tqdm(files,total=len(files)):
 
-			genes = list(SeqIO.parse('kegg/'+family+'/Fasta/'+file,'fasta'))
+			genes = list(SeqIO.parse(os.path.join(data_path,file),'fasta'))
 
-			if(len(genes)<lenli[-nClasses]):
+			if(len(genes)<lenli[-n_clusters]):		# ignoring smaller clusters
 
 				continue
 
-			np.random.shuffle(genes)
+			np.random.shuffle(genes)				# randomly shuffling the genes 
+
+			for gene in genes:					
+
+				X.append(str(gene.seq))				# adding the sequence
+				Y.append(file[:-6])					# adding the cluster id
+													# as the last 6 characters are '.fasta'
+																
+				kmers = breakIntoKmer(str(gene.seq),K).split(' ')		
+
+				for kmer in (kmers): 		
+				#debug line for kmer in tqdm(kmers,total=len(kmers)): 		
+
+						vocabulary[kmer] = True 				# computing vocabulary
+						
+		vSize = len(vocabulary)
+
+
+	else:							# Considering clusters with at least min_cnt genes
+
+		for file in tqdm(files,total=len(files)):
+
+			genes = list(SeqIO.parse(os.path.join(data_path,file),'fasta'))
+
+			if(len(genes)<min_cnt):				# ignoring smaller clusters
+
+				continue
 
 			for gene in genes:
-
-				X.append(str(gene.seq))
-				Y.append(file[0:6])
 
 				kmers = breakIntoKmer(str(gene.seq),K).split(' ')
 
 				for kmer in tqdm(kmers,total=len(kmers)):
 
-						vocabulary[kmer] = True 
+						vocabulary[kmer] = True 				# computing vocabulary
+						
 
 		vSize = len(vocabulary)
 
-
-	else:
-
-		for file in tqdm(files,total=len(files)):
-
-			genes = list(SeqIO.parse('kegg/'+family+'/Fasta/'+file,'fasta'))
-
-			if(len(genes)<minCnt):
-
-				continue
-
-			for gene in genes:
-
-				kmers = breakIntoKmer(str(gene.seq),K).split(' ')
-
-				for kmer in tqdm(kmers,total=len(kmers)):
-
-						vocabulary[kmer] = True 
-
-		vSize = len(vocabulary)
-
-		vocabulary = 'garbage'
+		vocabulary = 'garbage'		# literal garbage collection :p 
 		
 		for file in tqdm(files,total=len(files)):
+			
 
-			genes = list(SeqIO.parse('kegg/'+family+'/Fasta/'+file,'fasta'))
+			genes = list(SeqIO.parse(os.path.join(data_path,file),'fasta'))
 
-			if(len(genes)<minCnt):
+			if(len(genes)<min_cnt):		# ignoring smaller clusters
 
 				continue
 
-			np.random.shuffle(genes)
+			np.random.shuffle(genes)			# randomly shuffling the genes 
 
 			for gene in genes:
 
-				X.append(str(gene.seq))
-				Y.append(file[0:6])
+				X.append(str(gene.seq))			# adding the sequence
+				Y.append(file[:-6])				# adding the cluster id
+												# as the last 6 characters are '.fasta'
 
+	
+	print('Clusters : {}'.format(set(Y)))			# prints the clusters
 
-	print(set(Y))
+	print('Total clusters : {}'.format(len(set(Y))))		# prints the total number of clusters
 
-	print(len(set(Y)))
+	print('Vocabulary Size : {}'.format(vSize))
 
-	print(vSize)
-
-	pickle.dump((X,Y,vSize),open(saveFile,'wb'))
+	pickle.dump((X,Y,vSize),open(save_file_name,'wb'))			# stroing the data to be used in training later
 
 
 if __name__=='__main__':
 
-
-	
-	#readFastas('eukaryotes','3mer.p',k=3,nClasses=20)
-
-	rawReadFastas('completed/all','3merAll6.p',nClasses=200,minCnt=None,K=5)
+	readFastas('completed/all','3merAll6.p',n_clusters=200,min_cnt=None,K=5)
