@@ -170,7 +170,6 @@ def plotConfusionMatrix(result_file):
 
     plt.show()
 
-
 def formatData(X, Y):
     '''
     Formates the data to train the Naive Bayes model    
@@ -180,25 +179,25 @@ def formatData(X, Y):
         Y {list} -- cluster labels
     
     Returns:
-        [list] -- returns the formatted data as [ ((x11,x12,..,x1n),Y1), ((x21,x22,..,x2n),Y2) ... ] 
+        data [list] -- returns the formatted data as [ ((x11,x12,..,x1n),Y1), ((x21,x22,..,x2n),Y2) ... ] 
+        total_data [int] -- total number of data points
     '''
 
-    documents = []
+    data = []
     clsMapper = {}
     vocabulary = {}
 
-    total = len(X)    
+    total_data = len(X)    
 
     for i in tqdm(range(len(X))):
 
         try:
 
-            documents[clsMapper[Y[i]]][0].append(X[i])
+            data[clsMapper[Y[i]]][0].append(X[i])
 
         except:
 
             clsMapper[Y[i]] = len(clsMapper)
-            documents.append(([X[i]], Y[i]))
-
-
-    return (documents, total)
+            data.append(([X[i]], Y[i]))
+    
+    return (data, total_data)

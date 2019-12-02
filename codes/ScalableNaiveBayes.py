@@ -270,5 +270,51 @@ class NaiveBayesChild(object):
             raise ValueError('Pass as input list or numpy array of texts')
             return
 
+    def predictProba(self, X):
+        '''
+        compute the prediction probabilities using the child instance
+        
+        Arguments:
+            X {list or numpy array} -- the list of gene sequences
+        
+        Returns:
+            [list] -- computes the prediction probabilities of the clusters in the following format
+                        [ [cluster1_probability,cluster2_probability,...,clustern_probability] ... for x in X ]
+        '''
+
+
+        Y = []      # output clusters
+
+        try:
+
+            for i in tqdm(range(len(X))):
+                
+                y = []                                          # initialization
+                x = breakIntoKmer(X[i], self.K).split(' ')      # break the sequence into k-mers
+                for cluster_name in tqdm(self.classes, total=len(self.classes)):
+                    
+                    prediction = self.prior[cluster_name]
+
+                    for kmer_ in tqdm(x, total=len(x)):
+                        
+                        try:
+
+                            prediction += self.probabilities[cluster_name][kmer_]
+
+                        except:
+
+                            prediction += self.defaultRatio[cluster_name]
+
+                    
+                    y.append(prediction)
+
+                Y.append(y)
+
+            return Y
+
+        except Exception as e:
+
+            raise ValueError('Pass as input list or numpy array of texts')
+            return
 
 
