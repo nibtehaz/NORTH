@@ -33,4 +33,4 @@ The codes for NORTH are written in python and can be found [here](https://github
 
 The NORTH pipeline is demonstrated in the following Jupyter Notebook
 
-[NORTH Pipeline](https://github.com/nibtehaz/NORTH/blob/master/Demo.ipynb)
+[NORTH Pipeline](https://github.com/nibtehaz/NORTH/blob/master/codes/NORTH.ipynb)
