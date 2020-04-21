@@ -3,6 +3,10 @@
 
 This repository contains the original implementation of NORTH, a machine learning based tool to predict ortholog clusters.
 
+See our server implementation : [North Server](https://github.com/nibtehaz/NORTH-server)
+
+See our desktop implementation : [North App](https://github.com/nibtehaz/NORTH-app)
+
 NORTH works on predefined ortholog clusters. A Multinomial Naive Bayes model is trained to predict the ortholog clusters, drawing inspiration from typical BLAST based pipelines. 
 
 However, being trained on a set of predefined clusters, cases may occur when we are faced with a gene out of those predefined clusters. To overcome this issue NORTH also has a robust outlier detection method.
